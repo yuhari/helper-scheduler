@@ -1,0 +1,19 @@
+{
+    "name": "yuhari/scheduler",
+    "description": "a simple scheduler that deals some tasks.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "yuhari",
+            "email": "yuhari@126.com"
+        }
+    ],
+	"autoload" : {
+        "psr-4":{
+           "scheduler\\" : "src/"
+        }
+	},
+    "require": {
+    	"php" : ">=5.5"
+    }
+}
