@@ -140,12 +140,13 @@ class Scheduler {
 							list($task, $params) = $handler ;
 							if ($task instanceof Task) {
 								
-								if (function_exists('cli_set_process_title') && PHP_OS != 'Darwin') {
-									cli_set_process_title($task->name) ;
-								}
 								try{
 									$task->options = $params ;
 									$task->_init() ;
+									
+									if (function_exists('cli_set_process_title') && PHP_OS != 'Darwin') {
+										cli_set_process_title($task->name) ;
+									}
 								
 									$task->execute() ;
 									
@@ -157,7 +158,7 @@ class Scheduler {
 								}catch(\Exception $e) {
 									if (!empty($this->taskError)){
 										$error = $this->taskError ;
-										$error($task) ;
+										$error($e, $task) ;
 									}
 								}
 							}
@@ -170,7 +171,7 @@ class Scheduler {
 					} catch (\Exception $e) {
 						if (!empty($this->processError)) {
 							$error = $this->processError ;
-							$error() ;
+							$error($e) ;
 						}
 					} finally {
 						exit(0) ;
