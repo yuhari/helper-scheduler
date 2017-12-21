@@ -132,9 +132,14 @@ class Scheduler {
 			}
 		}
 		
+		$pids = [] ;
 		foreach($parallels as $serial) {
 			if (!empty($serial)) {
-				if (pcntl_fork() == 0) {
+				$pid = pcntl_fork() ;
+				
+				if ($pid) $pids[] = $pid ;
+				
+				if ($pid == 0) {
 					try {
 						foreach($serial as $handler) {
 							list($task, $params) = $handler ;
@@ -178,6 +183,10 @@ class Scheduler {
 					}
 				}
 			}
+		}
+		
+		foreach($pids as $pid) {
+			pcntl_waitpid($pid, $status) ;
 		}
 		
 		if (!empty($this->callback)){
